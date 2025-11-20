@@ -1,8 +1,12 @@
 {
-  "name": "widget-sdk",
+  "name": "pixelbin-widget-sdk",
   "version": "1.0.0",
   "description": "Pixelbin.io web widget sdk",
   "main": "dist/widget-sdk.js",
+  "browser": "dist/widget-sdk.js",
+  "unpkg": "dist/widget-sdk.js",
+  "jsdelivr": "dist/widget-sdk.js",
+  "sideEffects": false,
   "scripts": {
     "build": "webpack --mode=production",
     "build:dev": "webpack --mode=development",
