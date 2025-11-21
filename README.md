@@ -62,8 +62,9 @@ Prefer not to bundle the SDK? Load the prebuilt file from a CDN and use the glob
 <script src="https://cdn.jsdelivr.net/gh/pixelbin-io/pixelbin-widget-sdk@1.0.0/dist/widget-sdk.js" 
         integrity="sha384-lh7xurl4Nfutsm03ePF6XiKbjbel4Fpo1dXPCdZPkE3S6KjxuacE/h3Y5zaZ62p/" 
         crossorigin="anonymous"></script>
-<!-- Or use latest version (auto-updates, use with caution) -->
-<!-- <script src="https://cdn.jsdelivr.net/gh/pixelbin-io/pixelbin-widget-sdk@latest/dist/widget-sdk.js"></script> -->
+
+<!-- Or use master branch (auto-updates, use with caution) -->
+<!-- <script src="https://cdn.jsdelivr.net/gh/pixelbin-io/pixelbin-widget-sdk@master/dist/widget-sdk.js"></script> -->
 
 <script>
   const widget = window.WidgetSDK.init({
