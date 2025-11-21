@@ -44,12 +44,14 @@ jobs:
         npm run release -- --ci --increment=${{ github.event.inputs.version }}
         echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
-    - name: Upload Release Assets
+    - name: Create GitHub Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         VERSION="${{ steps.release.outputs.version }}"
-        gh release upload "v${VERSION}" \
+        # Extract changelog for this version
+        gh release create "v${VERSION}" \
+          --title "v${VERSION}" \
+          --notes-file CHANGELOG.md \
           dist/widget-sdk.js \
-          dist/widget-sdk.d.ts \
-          --clobber
+          dist/widget-sdk.d.ts
