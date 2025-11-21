@@ -37,7 +37,6 @@ import LogoutHandler from './handlers/LogoutHandler';
  * @property {HTMLElement|string} domNode Mount element or selector
  * @property {string} widgetOrigin Exact iframe origin, e.g. "https://console.pixelbin.io"
  * @property {string} [embedId] Optional public identifier for the integration
- * @property {string} [routePath] Optional route within the iframe app, e.g. "/embed"
  * @property {Params} [params] Extra query params appended to the iframe URL
  * @property {boolean} [autostart=false] Open automatically after READY
  * @property {string[]} [allowedIframeFeatures] Additional `allow` features for the iframe
@@ -395,21 +394,15 @@ export default class WidgetController {
   }
 
   /**
-   * Navigate to a different widget type or path inside the iframe.
+   * Navigate to a different widget type.
    * Returns a Promise that resolves when navigation succeeds or rejects on failure.
-   * @param {string|Object} pathOrOptions - Path string or options object
-   * @param {string} [pathOrOptions.widgetType] - Widget type to navigate to
-   * @param {string} [pathOrOptions.path] - Custom path
-   * @param {Object} [pathOrOptions.params] - Additional params
-   * @param {number} [pathOrOptions.timeout] - Override default timeout
+   * @param {Object} options - Navigation options
+   * @param {string} [options.widgetType] - Widget type to navigate to
+   * @param {number} [options.timeout] - Override default timeout
    * @returns {Promise<Object>} Resolves with navigation result payload
    */
-  navigate(pathOrOptions) {
-    const options = typeof pathOrOptions === 'string' 
-      ? { path: pathOrOptions } 
-      : pathOrOptions || {};
-    
-    return this._navigateHandler.execute(options, this._ensureReady.bind(this));
+  navigate(options) {
+    return this._navigateHandler.execute(options || {}, this._ensureReady.bind(this));
   }
 
   /**

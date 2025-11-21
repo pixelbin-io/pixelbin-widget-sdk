@@ -1,5 +1,6 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
   const isProd = (argv && argv.mode === 'production') || process.env.NODE_ENV === 'production';
@@ -30,6 +31,13 @@ module.exports = (env, argv) => {
         })
       ]
     },
+    plugins: [
+      new CopyPlugin({
+        patterns: [
+          { from: "src/index.d.ts", to: "widget-sdk.d.ts" },
+        ],
+      }),
+    ],
     module: {
       rules: [
         {

@@ -9,7 +9,6 @@ export const EMBED_ID_RE = /^[A-Za-z0-9._-]{3,128}$/;
 export const ALLOWED_WIDGET_ORIGINS = [
   'https://console.pixelbin.io',
   'https://console.pixelbinz0.de',
-  'https://local.pixelbinz0.de:9090'
 ];
 
 export const EVENTS = {

@@ -4,10 +4,19 @@ A zero-dependency browser SDK that mounts the Pixelbin widgets inside any web ap
 
 ## Installation
 
+### NPM
+You can install the SDK via npm:
+
 ```bash
 npm install pixelbin-widget-sdk
-# or
-yarn add pixelbin-widget-sdk
+```
+
+### CDN
+You can also use the SDK directly via CDN. We recommend using the integrity attribute for security.
+
+```html
+<!-- Replace 'latest' with specific version and use the corresponding integrity hash -->
+<script src="https://cdn.jsdelivr.net/npm/pixelbin-widget-sdk@latest/dist/widget-sdk.js"></script>
 ```
 
 The package publishes a browser-ready build at `dist/widget-sdk.js` and also exposes the same file through the `browser`, `unpkg`, and `jsdelivr` fields for CDN usage.
@@ -128,13 +137,32 @@ Handlers can be registered via `controller.on(event, callback)`, `once`, and `of
 
 ## Development
 
+### Setup
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Build
+To build the project and generate the SRI hash:
 ```bash
-npm install
 npm run build        # production bundle -> dist/widget-sdk.js
+```
+
+Other commands:
+```bash
 npm run build:dev    # unminified bundle
 npm run watch        # rebuild on file changes
 npm run dev          # run watch + example + mock iframe servers
 ```
+
+### Release
+To release a new version (requires permissions):
+```bash
+npm run release
+```
+Follow the interactive prompts to bump the version, generate changelog, and publish.
 
 The dev server expects static example assets under `examples/` and a mock iframe app under `examples/mock-iframe-app`.
 

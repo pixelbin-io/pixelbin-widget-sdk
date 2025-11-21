@@ -6,6 +6,18 @@
   "browser": "dist/widget-sdk.js",
   "unpkg": "dist/widget-sdk.js",
   "jsdelivr": "dist/widget-sdk.js",
+  "types": "dist/widget-sdk.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pixelbin-io/pixelbin-widget-sdk.git"
+  },
   "sideEffects": false,
   "scripts": {
     "build": "webpack --mode production",
@@ -13,22 +25,30 @@
     "watch": "webpack --watch --mode development",
     "dev": "concurrently \"npm run watch\" \"npm run example:server\"",
     "example:server": "node examples/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "release-it",
+    "postbuild": "node scripts/generate-sri.js"
   },
   "author": "Ankit Gupta",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
+    "@release-it/conventional-changelog": "^9.0.4",
     "babel-loader": "^9.2.1",
     "concurrently": "^8.2.2",
+    "copy-webpack-plugin": "^13.0.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^4.18.2",
     "http-server": "^14.1.1",
     "npm-run-all": "^4.1.5",
+    "release-it": "^17.11.0",
     "terser-webpack-plugin": "^5.3.10",
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
