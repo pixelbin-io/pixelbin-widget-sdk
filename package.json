@@ -27,6 +27,7 @@
     "example:server": "node examples/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "release-it",
+    "prepublishOnly": "npm run build",
     "postbuild": "node scripts/generate-sri.js"
   },
   "author": "Ankit Gupta",

@@ -7,10 +7,11 @@
   "github": {
     "release": true,
     "releaseName": "v${version}",
-    "tokenRef": "GITHUB_TOKEN"
+    "tokenRef": "GITHUB_TOKEN",
+    "assets": []
   },
   "npm": {
-    "publish": true
+    "publish": false
   },
   "plugins": {
     "@release-it/conventional-changelog": {
