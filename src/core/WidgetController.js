@@ -317,7 +317,6 @@ export default class WidgetController {
         this._navigateHandler.handleAck(data.payload);
         break;
       case EVENTS.SESSION_EXPIRED:
-        this._em.emit('sessionExpired', data.payload);
         this._handleSessionExpired(data.payload);
         break;
       default:
@@ -498,7 +497,7 @@ export default class WidgetController {
           );
         }
         const data = await res.json().catch(() => ({}));
-        const token = data && (data.token || data.bootstrapToken || data.access_token);
+        const token = data && data.token;
         if (!token) {
           throw new SdkError(
             ERROR_CODES.AUTH_ENDPOINT_NO_TOKEN,

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pixelbin Widget SDK – Basic Usage</title>
+    <style>
+      :root {
+        --primary: #4f46e5;
+        --primary-hover: #4338ca;
+        --bg: #f8fafc;
+        --panel-bg: #ffffff;
+        --text: #0f172a;
+        --border: #e2e8f0;
+      }
+
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        line-height: 1.5;
+        color: var(--text);
+        background: var(--bg);
+        margin: 0;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1400px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 2rem;
+      }
+
+      @media (max-width: 1024px) {
+        .main-content {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+        letter-spacing: -0.025em;
+      }
+
+      .header p {
+        color: #64748b;
+        margin: 0;
+      }
+
+      .card {
+        background: var(--panel-bg);
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+      }
+
+      .controls {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+
+      button {
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: white;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.95rem;
+      }
+
+      button:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+      }
+
+      button.primary {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      button.primary:hover {
+        background: var(--primary-hover);
+      }
+
+      #log {
+        background: #1e293b;
+        color: #e2e8f0;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.85rem;
+        padding: 1rem;
+        border-radius: 8px;
+        height: calc(600px - 40px);
+        overflow-y: auto;
+        white-space: pre-wrap;
+        margin: 0;
+      }
+
+      #pixelbin-widget {
+        min-height: 600px;
+        height: 600px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f1f5f9;
+        position: relative;
+      }
+      
+      #pixelbin-widget iframe {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>Pixelbin Widget SDK</h1>
+        <p>Interactive Demo & Integration Example</p>
+      </header>
+
+      <div class="main-content">
+        <div class="card">
+          <div class="controls">
+            <button id="init" class="primary">Initialize Widget</button>
+            <button id="open">Open Widget</button>
+            <button id="close">Close</button>
+            <button id="destroy">Destroy</button>
+          </div>
+          
+          <div id="pixelbin-widget"></div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top: 0; font-size: 1rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Event Log</h3>
+          <pre id="log">Waiting for events...</pre>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./basic.js"></script>
+  </body>
+</html>

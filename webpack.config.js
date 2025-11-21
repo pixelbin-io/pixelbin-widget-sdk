@@ -9,11 +9,13 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'widget-sdk.js',
-      library: 'WidgetSDK',
-      libraryTarget: 'umd',
-      umdNamedDefine: true,
-      globalObject: 'typeof self !== "undefined" ? self : this',
+      library: {
+        type: 'module'
+      },
       clean: true
+    },
+    experiments: {
+      outputModule: true
     },
     devtool: isProd ? false : 'source-map',
     target: ['web', 'es5'],
