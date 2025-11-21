@@ -1,6 +1,6 @@
 {
   "name": "pixelbin-widget-sdk",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Pixelbin.io web widget sdk",
   "main": "dist/widget-sdk.js",
   "browser": "dist/widget-sdk.js",
