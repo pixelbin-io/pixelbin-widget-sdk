@@ -2,7 +2,7 @@
 node_modules/
 
 # Production builds
-dist/
+# dist/ is committed for CDN access
 build/
 
 # Logs
