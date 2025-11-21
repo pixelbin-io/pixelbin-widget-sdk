@@ -34,9 +34,7 @@ const widget = init({
    },
    autostart: false,
    bootstrap: {
-      // Either provide a token up front...
-      token: window.__PIXELBIN_BOOTSTRAP__,
-      // ...or return one dynamically from your backend (Recommend):
+      // Recommend Method:
       getToken: async () => {
          const res = await fetch("/api/bootstrap", { credentials: "include" });
          const { token } = await res.json();
