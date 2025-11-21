@@ -16,7 +16,7 @@ You can also use the SDK directly via CDN. We recommend using the integrity attr
 
 ```html
 <!-- Replace 'latest' with specific version and use the corresponding integrity hash -->
-<script src="https://cdn.jsdelivr.net/npm/pixelbin-widget-sdk@latest/dist/widget-sdk.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/pixelbin-io/pixelbin-widget-sdk@latest/dist/widget-sdk.js"></script>
 ```
 
 The package publishes a browser-ready build at `dist/widget-sdk.js` and also exposes the same file through the `browser`, `unpkg`, and `jsdelivr` fields for CDN usage.
