@@ -100,9 +100,5 @@ document.querySelector('#destroy').addEventListener('click', () => {
         widget.destroy();
         widget = null;
         log('💥 Widget destroyed');
-        document.getElementById('pixelbin-widget').innerHTML = '<span>Widget destroyed. Click Open to re-init.</span>';
-        setTimeout(() => {
-            document.getElementById('pixelbin-widget').innerHTML = '';
-        }, 5000);
     }
 });
