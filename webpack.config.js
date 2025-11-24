@@ -1,6 +1,10 @@
 const path = require('path');
+const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+require('dotenv').config({
+  quiet: true
+});
 
 module.exports = (env, argv) => {
   const isProd = (argv && argv.mode === 'production') || process.env.NODE_ENV === 'production';
@@ -9,7 +13,7 @@ module.exports = (env, argv) => {
     entry: './src/index.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'widget-sdk.js',
+      filename: isProd ? 'widget-sdk.js' : 'widget-sdk.dev.js',
       library: {
         type: 'module'
       },
@@ -32,6 +36,9 @@ module.exports = (env, argv) => {
       ]
     },
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.WIDGET_ORIGIN': JSON.stringify(process.env.WIDGET_ORIGIN)
+      }),
       new CopyPlugin({
         patterns: [
           { from: "src/index.d.ts", to: "widget-sdk.d.ts" },

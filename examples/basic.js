@@ -1,6 +1,6 @@
 // Import from the built distribution
 // The SDK exports both named and default exports
-import { init } from '/dist/widget-sdk.js';
+import { init } from '/dist/widget-sdk.dev.js';
 
 // ----------------------------------------------------------------
 // LOGGING UTILITY
@@ -39,19 +39,36 @@ const fetchBootstrapToken = async () => {
 };
 
 // ----------------------------------------------------------------
+// CONFIG FETCH
+// ----------------------------------------------------------------
+const fetchConfig = async () => {
+    try {
+        const response = await fetch('/api/config');
+        if (!response.ok) throw new Error('Failed to fetch config');
+        return await response.json();
+    } catch (err) {
+        log('❌ Config fetch failed', { error: err.message });
+        throw err;
+    }
+};
+
+// ----------------------------------------------------------------
 // WIDGET INITIALIZATION
 // ----------------------------------------------------------------
 let widget = null;
 
-function initializeWidget() {
+async function initializeWidget() {
     if (widget) return;
 
     log('⚙️ Initializing widget...');
 
     try {
+        const config = await fetchConfig();
+
         widget = init({
             domNode: '#pixelbin-widget',
-            widgetOrigin: 'https://console.pixelbinz0.de',
+            widgetOrigin: config.widgetOrigin,
+            autostart: true,
             params: {
                 widgetType: 'ai-editor', // Change this to test other types
             },
@@ -101,4 +118,16 @@ document.querySelector('#destroy').addEventListener('click', () => {
         widget = null;
         log('💥 Widget destroyed');
     }
+});
+
+document.querySelector('#navigate').addEventListener('click', () => {
+    if (!widget) {
+        log('⚠️ Widget not initialized. Please initialize first.');
+        return;
+    }
+    const widgetType = document.querySelector('#widgetType').value;
+    log(`🧭 Navigating to ${widgetType}...`);
+    widget.navigate({ widgetType })
+        .then((payload) => log('✅ Navigation successful', payload))
+        .catch((err) => log('❌ Navigation failed', err));
 });

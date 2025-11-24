@@ -4,7 +4,7 @@ const crypto = require('crypto'); // Built-in Node.js module
 const path = require('path');
 
 // Load environment variables from .env file in the examples directory
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 
 const app = express();
 const PORT = 3000;
@@ -20,7 +20,7 @@ app.use(express.json());
 // NEVER expose your API Key in the frontend code!
 const PIXELBIN_API_KEY = process.env.PIXELBIN_API_KEY || 'YOUR_API_KEY_HERE';
 const ALLOWED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000'];
-const BASE_URL = process.env.MODE === 'production' ? 'https://api.pixelbin.io' : 'https://api.pixelbinz0.de';
+const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.pixelbin.io' : 'https://api.pixelbinz0.de';
 
 // ------------------------------------------------------------------
 // MOCK TOKEN GENERATION (Replace with real API call)
@@ -78,6 +78,12 @@ app.get('/api/bootstrap', async (req, res) => {
         console.error('Error generating token:', error);
         res.status(500).json({ error: 'Failed to generate token' });
     }
+});
+
+app.get('/api/config', (req, res) => {
+    res.json({
+        widgetOrigin: process.env.WIDGET_ORIGIN || 'https://console.pixelbinz0.de'
+    });
 });
 
 // ------------------------------------------------------------------
