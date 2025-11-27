@@ -6,8 +6,7 @@
   },
   "github": {
     "release": true,
-    "releaseName": "v${version}",
-    "assets": ["dist/widget-sdk.js", "dist/widget-sdk.d.ts"]
+    "releaseName": "v${version}"
   },
   "npm": {
     "publish": false

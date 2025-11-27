@@ -37,6 +37,19 @@ jobs:
       run: npm run build
 
     - name: Release
+      id: release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm run release -- --ci --increment=${{ github.event.inputs.version }}
+      run: |
+        npm run release -- --ci --increment=${{ github.event.inputs.version }}
+        echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+    - name: Upload Release Assets
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        VERSION="${{ steps.release.outputs.version }}"
+        gh release upload "v${VERSION}" \
+          dist/widget-sdk.js \
+          dist/widget-sdk.d.ts \
+          --clobber
