@@ -1,5 +1,18 @@
 # Changelog
 
+# [2.1.0](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.0.0...v2.1.0) (2025-11-27)
+
+
+### Bug Fixes
+
+* basic example fix ([3c5dc17](https://github.com/pixelbin-io/pixelbin-widget-sdk/commit/3c5dc171a9c33d204632a29d6fb6a68beae8d0a6))
+
+
+### Features
+
+* Add support for opening widget with an image URL and improve initialization handshake with an `INIT_ACK` event. ([21046ac](https://github.com/pixelbin-io/pixelbin-widget-sdk/commit/21046acf9286242b8a798405341c23d9b572ad17))
+* Add widget navigation and autostart features, enhance example page, and improve dev build configuration. ([be48272](https://github.com/pixelbin-io/pixelbin-widget-sdk/commit/be48272b078a4366b57dc9e774dc21881cbd6a65))
+
 # 2.0.0 (2025-11-21)
 
 
