@@ -2,7 +2,8 @@
   "git": {
     "commitMessage": "chore: release v${version}",
     "tagName": "v${version}",
-    "requireCleanWorkingDir": false
+    "requireCleanWorkingDir": false,
+    "requireBranch" : "master"
   },
   "github": {
     "release": true,
@@ -23,5 +24,8 @@
       "infile": "CHANGELOG.md",
       "header": "# Changelog"
     }
+  },
+  "hooks": {
+    "after:bump": "npm run build && git add dist/widget-sdk.js dist/widget-sdk.d.ts"
   }
 }
