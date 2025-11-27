@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.1.0...v2.1.1) (2025-11-27)
+
+
+### Features
+
+* Configure release-it to create GitHub releases and upload assets, streamlining the release workflow. ([0aafa59](https://github.com/pixelbin-io/pixelbin-widget-sdk/commit/0aafa59186cca606803c0d504aa9be9b8f4b6da8))
+
 # [2.1.0](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.0.0...v2.1.0) (2025-11-27)
 
 
