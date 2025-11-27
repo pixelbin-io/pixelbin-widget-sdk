@@ -6,7 +6,13 @@
   },
   "github": {
     "release": true,
-    "releaseName": "v${version}"
+    "releaseName": "v${version}",
+    "tokenRef": "GITHUB_TOKEN",
+    "assets": [
+      "dist/widget-sdk.js",
+      "dist/widget-sdk.d.ts"
+    ]
+
   },
   "npm": {
     "publish": false
