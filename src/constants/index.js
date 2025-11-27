@@ -1,6 +1,6 @@
 // Constants for the Widget SDK
 
-export const VERSION = '1.0.0';
+export const VERSION = process.env.PACKAGE_VERSION;
 export const ERR_PREFIX = 'Widget SDK: ';
 
 export const EMBED_ID_RE = /^[A-Za-z0-9._-]{3,128}$/;

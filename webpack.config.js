@@ -37,7 +37,8 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.WIDGET_ORIGIN': JSON.stringify(process.env.WIDGET_ORIGIN)
+        'process.env.WIDGET_ORIGIN': JSON.stringify(process.env.WIDGET_ORIGIN),
+        'process.env.PACKAGE_VERSION': JSON.stringify(require('./package.json').version)
       }),
       new CopyPlugin({
         patterns: [
