@@ -6,14 +6,7 @@
     "requireBranch" : "master"
   },
   "github": {
-    "release": true,
-    "releaseName": "v${version}",
-    "tokenRef": "GITHUB_TOKEN",
-    "assets": [
-      "dist/widget-sdk.js",
-      "dist/widget-sdk.d.ts"
-    ]
-
+    "release": false
   },
   "npm": {
     "publish": false
