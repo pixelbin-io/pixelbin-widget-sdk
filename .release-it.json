@@ -5,8 +5,9 @@
     "requireCleanWorkingDir": false
   },
   "github": {
-    "release": false,
-    "assets": []
+    "release": true,
+    "releaseName": "v${version}",
+    "assets": ["dist/widget-sdk.js", "dist/widget-sdk.d.ts"]
   },
   "npm": {
     "publish": false
@@ -14,7 +15,8 @@
   "plugins": {
     "@release-it/conventional-changelog": {
       "preset": "angular",
-      "infile": "CHANGELOG.md"
+      "infile": "CHANGELOG.md",
+      "header": "# Changelog"
     }
   }
 }
