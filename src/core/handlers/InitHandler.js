@@ -9,7 +9,7 @@ export default class InitHandler {
     this._logger = logger;
     this._post = postMessage;
     this._emitError = emitError;
-    
+
     this._initAck = false;
     this._initRetryHandle = null;
     this._initRetryAttempts = 0;
@@ -28,7 +28,7 @@ export default class InitHandler {
     const sendInit = () => {
       this._logger.log('INIT attempt', this._initRetryAttempts + 1);
       this._post(CMDS.INIT, payload);
-      
+
       if (this._initAck) {
         this.clear();
         return;
@@ -56,12 +56,18 @@ export default class InitHandler {
   }
 
   /**
-   * Handle READY acknowledgement from iframe.
+   * Handle INIT_ACK from iframe.
    */
-  handleReady() {
+  handleAck() {
     this._initAck = true;
     this.clear();
-    if (this._onReady) {
+  }
+
+  /**
+   * Handle READY event from iframe.
+   */
+  handleReady() {
+    if (this._initAck && this._onReady) {
       this._onReady();
     }
   }

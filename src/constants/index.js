@@ -13,6 +13,7 @@ export const ALLOWED_WIDGET_ORIGINS = [
 ];
 
 export const EVENTS = {
+  INIT_ACK: 'WIDGET_INIT_ACK',
   READY: 'WIDGET_READY',
   PING: 'WIDGET_PING',
   OPENED:'WIDGET_OPENED',
@@ -72,7 +73,7 @@ export const DEFAULTS = {
 };
 
 
-export const INIT_RETRY_INTERVAL_MS = 500;
+export const INIT_RETRY_INTERVAL_MS = 1000;
 export const INIT_MAX_ATTEMPTS = 10;
 export const LOGOUT_TIMEOUT_MS = 2000;
 export const NAVIGATE_TIMEOUT_MS = 5000;

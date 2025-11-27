@@ -89,10 +89,14 @@ async function initializeWidget() {
             .on('close', () => log('📕 Widget CLOSED'))
             .on('logout', (payload) => log('👋 Logout requested', payload))
             .on('navigate', (payload) => log('🧭 Navigation', payload))
-            .on('error', (err) => log(`⚠️ Error: ${err.code}`, err));
+            .on('error', (err) => {
+                log(`⚠️ Error: ${err.code}`, err);
+                widget = null;
+            });
 
     } catch (e) {
         log('❌ Initialization failed', { message: e.message });
+        widget = null;
     }
 }
 
@@ -130,4 +134,28 @@ document.querySelector('#navigate').addEventListener('click', () => {
     widget.navigate({ widgetType })
         .then((payload) => log('✅ Navigation successful', payload))
         .catch((err) => log('❌ Navigation failed', err));
+});
+
+document.querySelector('#openWithImage').addEventListener('click', async () => {
+    if (!widget) {
+        log('⚠️ Widget not initialized. Initializing now...');
+        await initializeWidget();
+    }
+
+    const imageUrl = document.querySelector('#imageUrl').value;
+    const widgetType = document.querySelector('#widgetType').value; // optional
+
+    if (!imageUrl) {
+        log('⚠️ Please provide an image URL');
+        return;
+    }
+
+    try {
+        if (imageUrl) {
+            log(`📸 Opening widget with image URL: ${imageUrl}`);
+            widget.open({ imageUrl, widgetType });
+        }
+    } catch (err) {
+        log('❌ Failed to open with image', { error: err.message });
+    }
 });

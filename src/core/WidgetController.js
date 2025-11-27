@@ -293,6 +293,9 @@ export default class WidgetController {
     if (!data || !data.type) return;
     this._logger.log('message ←', event.origin, data);
     switch (data.type) {
+      case EVENTS.INIT_ACK:
+        this._initHandler.handleAck();
+        break;
       case EVENTS.READY:
         this._initHandler.handleReady();
         break;
@@ -381,9 +384,29 @@ export default class WidgetController {
   _hide() { this.iframe.style.display = 'none'; }
 
   // Public API
-  /** Open the widget (requests OPEN and sets display:block) */
-  open() {
-    this._ensureReady(() => { this._post(CMDS.OPEN); this._show(); });
+  /**
+   * Open the widget with optional image data
+   * @param {Object} [options] - Open options
+   * @param {string} [options.imageUrl] - URL of the image to edit
+   * @param {string} [options.widgetType] - Optional widget type to open
+   * @returns {WidgetController} this instance for chaining
+   */
+  open(options = {}) {
+    this._ensureReady(() => {
+      const payload = {};
+
+      // Handle imageUrl (regular URL)
+      if (options.imageUrl && typeof options.imageUrl === 'string') {
+        payload.imageUrl = options.imageUrl;
+      }
+
+      // Handle widgetType
+      if (options.widgetType) {
+        payload.widgetType = options.widgetType;
+      }
+
+      this._post(CMDS.OPEN, payload);
+    });
     return this;
   }
 
@@ -442,12 +465,15 @@ export default class WidgetController {
   _finishDestroy() {
     if (this._destroyed) return;
     this._destroyed = true;
+    this._ready = false;
+    this._reinitializing = false;
+    this._queue = [];
     
     // Cleanup all handlers
     this._initHandler.clear();
     this._logoutHandler.clear();
     this._navigateHandler.cleanup();
-    
+
     try { window.removeEventListener('message', this._onMessage, false); } catch(_){ }
     try { if (this.iframe && this.iframe.parentNode) this.iframe.parentNode.removeChild(this.iframe); } catch(_){ }
     this._em.emit('destroy');

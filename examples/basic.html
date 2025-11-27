@@ -180,6 +180,29 @@
             </div>
           </div>
           
+          <div style="margin-bottom: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+            <p style="margin: 0 0 1rem 0; font-size: 0.9rem; color: #64748b;">
+              <strong>Open with Image:</strong> Pre-load the widget with an image by providing a URL or uploading a file.
+            </p>
+            
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-end;">
+              <div style="flex: 1; min-width: 250px;">
+                <label style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--text); margin-bottom: 0.5rem;">
+                  Image URL
+                </label>
+                <input 
+                  type="text" 
+                  id="imageUrl" 
+                  placeholder="https://example.com/image.jpg"
+                  style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); font-size: 0.95rem; box-sizing: border-box;"
+                />
+              </div>
+              <button id="openWithImage" style="background: var(--primary); color: white; border-color: var(--primary); white-space: nowrap;">
+                Open with Image
+              </button>
+            </div>
+          </div>
+          
           <div id="pixelbin-widget"></div>
         </div>
 
