@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.3](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.1.2...v2.1.3) (2025-11-27)
+
+
+### Features
+
+* Decouple GitHub release asset uploads from release-it and add documentation for the solution. ([1f941c0](https://github.com/pixelbin-io/pixelbin-widget-sdk/commit/1f941c0cfab1d48cdf7167c3a710c36d4a5aa523))
+
 ## [2.1.2](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.1.0...v2.1.2) (2025-11-27)
 
 
