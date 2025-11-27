@@ -474,8 +474,8 @@ export default class WidgetController {
     this._logoutHandler.clear();
     this._navigateHandler.cleanup();
 
-    try { window.removeEventListener('message', this._onMessage, false); } catch(_){ }
-    try { if (this.iframe && this.iframe.parentNode) this.iframe.parentNode.removeChild(this.iframe); } catch(_){ }
+    try { window.removeEventListener('message', this._onMessage, false); } catch (_) { /* no-op */ }
+    try { if (this.iframe && this.iframe.parentNode) this.iframe.parentNode.removeChild(this.iframe); } catch (_) { /* no-op */ }
     this._em.emit('destroy');
   }
 

@@ -28,7 +28,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "release-it",
     "prepublishOnly": "npm run build",
-    "postbuild": "node scripts/generate-sri.js"
+    "postbuild": "node scripts/generate-sri.js",
+    "lint": "eslint src examples"
   },
   "author": "Ankit Gupta",
   "license": "MIT",
@@ -41,7 +42,10 @@
     "copy-webpack-plugin": "^13.0.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
     "express": "^4.18.2",
+    "globals": "^16.5.0",
     "http-server": "^14.1.1",
     "npm-run-all": "^4.1.5",
     "release-it": "^17.11.0",
