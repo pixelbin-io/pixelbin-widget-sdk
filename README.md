@@ -134,8 +134,8 @@ Handlers can be registered via `controller.on(event, callback)`, `once`, and `of
 
 ## Public API
 
--  `open()` / `close()` – show or hide the iframe (automatically emits the corresponding events).
--  `navigate(options)` – accepts `{ widgetType, path, params, timeout }` or a simple path string. Returns a `Promise` that resolves when the iframe acknowledges navigation, or rejects (with timeout) if it cannot.
+-  `open(options)` / `close()` – show or hide the iframe. `open` accepts optional `{ imageUrl, widgetType }`.
+-  `navigate(options)` – accepts `{ widgetType, timeout }`. Returns a `Promise` that resolves when the iframe acknowledges navigation, or rejects (with timeout) if it cannot.
 -  `updateConfig(patch)` – shallow merges runtime configuration changes (e.g., inject new inline styles).
 -  `destroy({ force })` – removes event listeners and iframe. With `{ force: true }` it skips the logout handshake.
 -  `on(event, handler)` / `once` / `off` – EventEmitter helpers.
@@ -162,21 +162,12 @@ npm run watch        # rebuild on file changes
 npm run dev          # run watch + example + mock iframe servers
 ```
 
-### Release
-To release a new version (requires permissions):
-```bash
-npm run release
-```
-Follow the interactive prompts to bump the version, generate changelog, and publish.
-
-The dev server expects static example assets under `examples/` and a mock iframe app under `examples/mock-iframe-app`.
-
 ## Examples
 
 -  `examples/basic.html` – Minimal host page that loads the built SDK, mounts the widget, requests a bootstrap token from a mock endpoint, and wires up open/logout/error events.
 
 Serve it locally with any static server (e.g., `npx http-server -p 9000 examples`) or adapt it into your integration environment.
 
-## Need feedback?
+## Queries
 
-If you find missing types, need additional events, or want to add framework-specific helpers, please open an issue or PR. Contributions such as typed definitions, Cypress smoke tests, or framework wrappers (React hook, Vue composable, etc.) are welcome.
+Connect to ankitgupta@gofynd.com
