@@ -149,6 +149,49 @@ Handlers can be registered via `controller.on(event, callback)`, `once`, and `of
    npm install
    ```
 
+### Generate SSL Certificates
+The example server requires HTTPS. Generate local SSL certificates using [mkcert](https://github.com/FiloSottile/mkcert):
+
+1. Install mkcert (if not already installed):
+   ```bash
+   # macOS
+   brew install mkcert
+
+   # Windows
+   choco install mkcert
+
+   # Linux
+   # See https://github.com/FiloSottile/mkcert#installation
+   ```
+
+2. Install local CA:
+   ```bash
+   mkcert -install
+   ```
+
+3. Generate certificates in the `examples/ssl` folder:
+   ```bash
+   mkdir -p examples/ssl
+   cd examples/ssl
+   mkcert localhost 127.0.0.1
+   ```
+
+   This creates `localhost+1.pem` (certificate) and `localhost+1-key.pem` (private key) in the `examples/ssl/` directory.
+
+### Environment Variables
+Create a `.env` file with the following keys:
+
+```bash
+# Environment mode (development or production)
+NODE_ENV=development
+
+# Your Pixelbin API key (get this from your Pixelbin dashboard)
+PIXELBIN_API_KEY=<YOUR_API_KEY>
+
+# Widget origin URL
+WIDGET_ORIGIN=https://console.pixelbinz0.de  # or https://console.pixelbin.io for production
+```
+
 ### Build
 To build the project and generate the SRI hash:
 ```bash

@@ -1,7 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const crypto = require('crypto'); // Built-in Node.js module
+// const crypto = require('crypto'); // Built-in Node.js module
 const path = require('path');
+const fs = require('fs');
+const https = require('https');
 
 // Load environment variables from .env file in the examples directory
 require('dotenv').config({ quiet: true });
@@ -13,13 +15,18 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
+const options = {
+    key: fs.readFileSync(path.join(__dirname, 'ssl', 'localhost+1-key.pem')), // Your private key file
+    cert: fs.readFileSync(path.join(__dirname, 'ssl', 'localhost+1.pem'))      // Your certificate file
+  };
+
 // ------------------------------------------------------------------
 // CONFIGURATION
 // ------------------------------------------------------------------
 // In a real app, these should be environment variables.
 // NEVER expose your API Key in the frontend code!
 const PIXELBIN_API_KEY = process.env.PIXELBIN_API_KEY || 'YOUR_API_KEY_HERE';
-const ALLOWED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000'];
+// const ALLOWED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000'];
 const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.pixelbin.io' : 'https://api.pixelbinz0.de';
 
 // ------------------------------------------------------------------
@@ -89,7 +96,7 @@ app.get('/api/config', (req, res) => {
 // ------------------------------------------------------------------
 // START SERVER
 // ------------------------------------------------------------------
-const server = app.listen(PORT, () => {
+const server = https.createServer(options, app).listen(PORT, () => {
     console.log(`\n🚀 Reference Backend Server running at http://localhost:${PORT}`);
     console.log(`👉 Open http://localhost:${PORT}/basic.html to see the widget example.`);
     console.log(`   (Make sure you have built the SDK first with 'npm run build')\n`);

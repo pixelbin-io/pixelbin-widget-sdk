@@ -63,7 +63,7 @@ export default class WidgetController {
     this._ready = false;
     this._destroyed = false;
     this._queue = [];
-    this._reinitializing = false;
+    this._authenticating = false;
     
     // Initialize handlers
     this._initHandler = new InitHandler(
@@ -84,77 +84,98 @@ export default class WidgetController {
   }
 
   _setupFrameAndInit() {
-    const bs = this.config.bootstrap || {};
-    const needToken = (!!bs.getToken || !!bs.endpoint) && !bs.token;
-    // Enforce query placement for token with fixed query param name
-    const QUERY_PARAM_NAME = 'btToken';
+    // Duplicate prevention
+    const mount = getDomNode(this.config.domNode);
+    const existing = mount.querySelector('iframe[data-widget-sdk="true"]');
+    if (existing) {
+      throw new SdkError(
+        ERROR_CODES.CONFIG_DUPLICATE_INIT,
+        ERROR_MESSAGES[ERROR_CODES.CONFIG_DUPLICATE_INIT],
+        { domNode: this.config.domNode }
+      );
+    }
 
-    const setupFrameAndInit = () => {
-      // Duplicate prevention
-      const mount = getDomNode(this.config.domNode);
-      const existing = mount.querySelector('iframe[data-widget-sdk="true"]');
-      if (existing) {
-        throw new SdkError(
-          ERROR_CODES.CONFIG_DUPLICATE_INIT,
-          ERROR_MESSAGES[ERROR_CODES.CONFIG_DUPLICATE_INIT],
-          { domNode: this.config.domNode }
-        );
-      }
+    // Create iframe WITHOUT btToken - server will check for existing cookie session
+    this._logger.log('Creating iframe without btToken (cookie-first flow)');
+    this.iframe = createIframe(this.config, (...args) => this._logger.log(...args));
 
-      // Always place token in query (if available)
-      const cfgForIframe = (this.config.bootstrap && this.config.bootstrap.token)
-        ? shallowMerge(this.config, {
-            params: shallowMerge(this.config.params || {}, {
-              [QUERY_PARAM_NAME]: bs.token
-            })
-          })
-        : this.config;
-      
-      this._logger.log('cfgForIframe', cfgForIframe);
+    // Bind message listener
+    this._onMessage = this._handleMessage.bind(this);
+    window.addEventListener('message', this._onMessage, false);
 
-      this.iframe = createIframe(cfgForIframe, (...args) => this._logger.log(...args));
+    // Set up load handler for INIT handshake
+    this._setupInitHandshake();
+  }
 
-      // Bind message listener
-      this._onMessage = this._handleMessage.bind(this);
-      window.addEventListener('message', this._onMessage, false);
-
-      // INIT handshake (token is never sent via INIT; always via query)
-      const doInit = () => {
-        const payload = {
-          version: VERSION,
-          token: null,
-          parentOrigin: window.location.origin,
-          params: this.config.params || {}
-        };
-        if (this.config.embedId != null) payload.embedId = this.config.embedId;
-
-        this._initHandler.start(payload, () => {
-          this._ready = true;
-          this._flushQueue();
-          this._em.emit('ready');
-          if (this.config.autostart) this.open();
-        });
+  /**
+   * Set up the INIT handshake on iframe load.
+   * @private
+   */
+  _setupInitHandshake() {
+    const doInit = () => {
+      const payload = {
+        version: VERSION,
+        token: null,
+        parentOrigin: window.location.origin,
+        params: this.config.params || {}
       };
+      if (this.config.embedId != null) payload.embedId = this.config.embedId;
 
-      if (this.iframe.contentWindow && this.iframe.contentDocument && this.iframe.contentDocument.readyState === 'complete') {
-        doInit();
-      } else {
-        this.iframe.addEventListener('load', doInit, { once: true });
-      }
+      this._initHandler.start(payload, () => {
+        this._ready = true;
+        this._authenticating = false;
+        this._flushQueue();
+        this._em.emit('ready');
+        if (this.config.autostart) this.open();
+      });
     };
 
-    if (needToken && !(this.config.bootstrap && this.config.bootstrap.token)) {
-      // Need token before iframe to put into URL
-      this._resolveToken()
-        .then((tk) => { this.config.bootstrap.token = tk; setupFrameAndInit(); })
-        .catch((e) => {
-          this._logger.error('Token error', e);
-          // Auth errors are NOT fatal by default - integrator can retry
-          this._emitError(e, false);
-        });
+    if (this.iframe.contentWindow && this.iframe.contentDocument && this.iframe.contentDocument.readyState === 'complete') {
+      doInit();
     } else {
-      setupFrameAndInit();
+      this.iframe.addEventListener('load', doInit, { once: true });
     }
+  }
+
+  /**
+   * Handle session authentication when iframe reports session error.
+   * Fetches btToken and reloads iframe with token in URL.
+   * @param {Object} payload - Event payload from iframe
+   * @private
+   */
+  _handleSessionAuth(payload) {
+    if (this._authenticating || this._destroyed) return;
+    
+    this._logger.warn('Session requires authentication, fetching token...', payload);
+    this._authenticating = true;
+    
+    // Reset ready state
+    this._ready = false;
+    this._queue = [];
+    this._initHandler.clear();
+
+    // Fetch token and reload iframe
+    this._resolveToken()
+      .then((token) => {
+        if (this._destroyed) return;
+        
+        this._logger.log('Token obtained, reloading iframe with btToken');
+        
+        // Build new URL with btToken
+        const currentUrl = new URL(this.iframe.src);
+        currentUrl.searchParams.set('btToken', token);
+        
+        // Update iframe src (triggers reload)
+        this.iframe.src = currentUrl.toString();
+        
+        // Re-setup INIT handshake on load
+        this._setupInitHandshake();
+      })
+      .catch((e) => {
+        this._logger.error('Token fetch failed during session auth', e);
+        this._authenticating = false;
+        this._emitError(e, false);
+      });
   }
 
   /**
@@ -319,47 +340,12 @@ export default class WidgetController {
         this._navigateHandler.handleAck(data.payload);
         break;
       case EVENTS.SESSION_EXPIRED:
-        this._handleSessionExpired(data.payload);
+      case EVENTS.SESSION_NOT_FOUND:
+        this._handleSessionAuth(data.payload);
         break;
       default:
         break;
     }
-  }
-
-  /**
-   * Handle session expiration - reinitialize widget with new token.
-   * @private
-   */
-  _handleSessionExpired(payload) {
-    if (this._reinitializing || this._destroyed) return;
-    
-    this._logger.warn('Session expired, reinitializing widget...', payload);
-    this._reinitializing = true;
-    
-    // Reset state
-    this._ready = false;
-    this._queue = [];
-    
-    // Cleanup existing iframe
-    try {
-      window.removeEventListener('message', this._onMessage, false);
-      if (this.iframe && this.iframe.parentNode) {
-        this.iframe.parentNode.removeChild(this.iframe);
-      }
-    } catch (e) {
-      this._logger.error('Error cleaning up during reinitialization', e);
-    }
-    
-    // Clear token to force refresh
-    if (this.config.bootstrap) {
-      this.config.bootstrap.token = null;
-    }
-    
-    // Reinitialize
-    setTimeout(() => {
-      this._reinitializing = false;
-      this._setupFrameAndInit();
-    }, 100);
   }
 
   /**
@@ -466,7 +452,7 @@ export default class WidgetController {
     if (this._destroyed) return;
     this._destroyed = true;
     this._ready = false;
-    this._reinitializing = false;
+    this._authenticating = false;
     this._queue = [];
     
     // Cleanup all handlers
