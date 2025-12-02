@@ -1,5 +1,12 @@
 # Changelog
 
+# [2.2.0](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.1.6...v2.2.0) (2025-12-02)
+
+
+### Features
+
+* Add SSL certificate generation instructions to README, implement HTTPS server in examples, and enhance session handling in WidgetController ([227304e](https://github.com/pixelbin-io/pixelbin-widget-sdk/commit/227304e66a6c77838f84310d6b9a65f04947face))
+
 ## [2.1.6](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.1.5...v2.1.6) (2025-11-27)
 
 ## [2.1.5](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.1.4...v2.1.5) (2025-11-27)
