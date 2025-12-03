@@ -1,5 +1,7 @@
 # Changelog
 
+## [2.2.1](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.2.0...v2.2.1) (2025-12-03)
+
 # [2.2.0](https://github.com/pixelbin-io/pixelbin-widget-sdk/compare/v2.1.6...v2.2.0) (2025-12-02)
 
 
