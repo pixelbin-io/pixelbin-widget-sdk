@@ -60,7 +60,7 @@ export const DEFAULTS = {
     display: 'none',
   },
   debug: false,
-  routePath : "/widget",
+  routePath : "/api/widget",
   // Bootstrap token configuration
   bootstrap: {
     token: null,             // if a token is already available
