@@ -15,12 +15,13 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'dist'),
       filename: isProd ? 'widget-sdk.js' : 'widget-sdk.dev.js',
       library: {
-        type: 'module'
+        name: 'WidgetSDK',            // Global variable name (backward compatible)
+        type: 'umd',                  // Universal Module Definition (works everywhere)
+        export: 'default',            // Export the default export as the library
+        umdNamedDefine: true,         // AMD module name
       },
+      globalObject: 'this',           // Works in browser & Node.js
       clean: true
-    },
-    experiments: {
-      outputModule: true
     },
     devtool: isProd ? false : 'source-map',
     target: ['web', 'es5'],

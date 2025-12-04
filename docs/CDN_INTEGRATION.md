@@ -27,7 +27,7 @@ Available mirrors:
 - `https://cdn.jsdelivr.net/npm/pixelbin-widget-sdk@1/dist/widget-sdk.js`
 - `https://unpkg.com/pixelbin-widget-sdk@1/dist/widget-sdk.js`
 
-After the script loads it exposes `window.WidgetSDK.init`.
+After the script loads it exposes `window.WidgetSDK`.
 
 ## 3. Initialize the widget
 
@@ -40,7 +40,7 @@ After the script loads it exposes `window.WidgetSDK.init`.
     return data.token;
   }
 
-  const widget = window.WidgetSDK.init({
+  const widget = WidgetSDK.init({
     domNode: '#pixelbin-widget',
     widgetOrigin: 'https://console.pixelbin.io',
     params: { widgetType: 'ai-editor' },

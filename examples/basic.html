@@ -212,6 +212,9 @@
         </div>
       </div>
     </div>
-    <script type="module" src="./basic.js"></script>
+    <!-- Load SDK first (UMD build exposes window.PixelbinWidget) -->
+    <script src="/dist/widget-sdk.dev.js"></script>
+    <!-- Then load the app script -->
+    <script src="./basic.js"></script>
   </body>
 </html>

@@ -1,6 +1,6 @@
-// Import from the built distribution
-// The SDK exports both named and default exports
-import { init } from '/dist/widget-sdk.dev.js';
+// SDK is loaded via script tag in basic.html
+// With UMD build, it's available as window.WidgetSDK
+const { init } = window.WidgetSDK;
 
 // ----------------------------------------------------------------
 // LOGGING UTILITY
